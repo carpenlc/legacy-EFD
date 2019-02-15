@@ -1,0 +1,57 @@
+/****************************************************************
+ *
+ * Solers, Inc. as the author of Enterprise File Delivery 2.1 (EFD 2.1)
+ * source code submitted herewith to the Government under contract
+ * retains those intellectual property rights as set forth by the Federal 
+ * Acquisition Regulations agreement (FAR). The Government has 
+ * unlimited rights to redistribute copies of the EFD 2.1 in 
+ * executable or source format to support operational installation 
+ * and software maintenance. Additionally, the executable or 
+ * source may be used or modified for by third parties as 
+ * directed by the government.
+ *
+ * (c) 2009 Solers, Inc.
+ ***********************************************************/
+package com.solers.delivery.domain.validations.validators;
+
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.log4j.Logger;
+import org.hibernate.validator.Validator;
+
+import com.solers.delivery.domain.validations.RestrictedPath;
+import com.solers.delivery.util.FileSystemUtil;
+
+/**
+ * @author <a href="mailto:kconaway@solers.com">Kevin Conaway</a>
+ */
+public class RestrictedPathValidator implements Validator<RestrictedPath> {
+    
+    private static final Logger logger = Logger.getLogger(RestrictedPathValidator.class);
+    
+    @Override
+    public void initialize(RestrictedPath arg) {
+    }
+
+    @Override
+    public boolean isValid(Object arg) {
+        if (arg == null) {
+            return false;
+        }
+        String path = (String) arg;
+        return pathInEfdHome(new File(path)) == false;
+    }
+    
+    protected boolean pathInEfdHome(File source) {
+        try {
+            String canonicalPath = source.getCanonicalPath();
+            String efdPath = FileSystemUtil.getEFDHome().getCanonicalPath();
+            return FileSystemUtil.pathIsChild(canonicalPath, efdPath);
+        } catch (IOException ioe) {
+            logger.warn("Failed to canonicalize path", ioe);
+            return true;
+        }
+    }
+    
+}

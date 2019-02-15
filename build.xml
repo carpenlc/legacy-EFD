@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<!-- By default, only the Clean and Build commands use this build script. -->
+<!-- Commands such as Run, Debug, and Test only use this build script if -->
+<!-- the Compile on Save feature is turned off for the project. -->
+<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
+<!-- in the project's Project Properties dialog box.-->
+
+<!--
+
+    There exist several targets which are by default empty and which can be 
+    used for execution of your tasks. These targets are usually executed 
+    before and after some main targets. They are: 
+
+      -pre-init:                 called before initialization of project properties 
+      -post-init:                called after initialization of project properties 
+      -pre-compile:              called before javac compilation 
+      -post-compile:             called after javac compilation 
+      -pre-compile-single:       called before javac compilation of single file
+      -post-compile-single:      called after javac compilation of single file
+      -pre-compile-test:         called before javac compilation of JUnit tests
+      -post-compile-test:        called after javac compilation of JUnit tests
+      -pre-compile-test-single:  called before javac compilation of single JUnit test
+      -post-compile-test-single: called after javac compilation of single JUunit test
+      -pre-dist:                 called before archive building 
+      -post-dist:                called after archive building 
+      -post-clean:               called after cleaning build products 
+      -pre-run-deploy:           called before deploying
+      -post-run-deploy:          called after deploying
+
+    Example of pluging an obfuscator after the compilation could look like 
+build.xml
+        <target name="-post-compile">
+            <obfuscate>
+                <fileset dir="${build.classes.dir}"/>
+            </obfuscate>
+        </target>
+
+    For list of available properties check the imported 
+    nbproject/build-impl.xml file. 
+
+
+    Other way how to customize the build is by overriding existing main targets.
+    The target of interest are: 
+
+      init-macrodef-javac:    defines macro for javac compilation
+      init-macrodef-junit:   defines macro for junit execution
+      init-macrodef-debug:    defines macro for class debugging
+      do-dist:                archive building
+      run:                    execution of project 
+      javadoc-build:          javadoc generation 
+
+    Example of overriding the target for project execution could look like 
+
+        <target name="run" depends="<PROJNAME>-impl.jar">
+            <exec dir="bin" executable="launcher.exe">
+                <arg file="${dist.jar}"/>
+            </exec>
+        </target>
+
+    Notice that overridden target depends on jar target and not only on 
+    compile target as regular run target does. Again, for list of available 
+    properties which you can use check the target you are overriding in 
+    nbproject/build-impl.xml file. 
+
+    -->
+    
+<!-- Here's an example project:
+
+<project name="EFD" default="default" basedir=".">
+    <description>Builds, tests, and runs the project EFD.</description>
+    <import file="nbproject/build-impl.xml"/>
+     
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+
+    <property name="build.dir"     value="bin"/>
+    <property name="src.dir"       value="src"/>
+    <property name="lib.dir"       value="../jars"/>
+    <property name="classes.dir"   value="${build.dir}/classes> 5, numHelperThreads -> 3, numThreadsAwaitingCheckoutDefaultUser -> 0, preferredTestQuery -> null, properties -> {user=******, password=******}, propertyCycle -> 0, testConnectionOnCheckin -> false, testConnec"/>
+    <property name="jar.dir"       value="${build.dir}/jar"/>
+    <property name="jar.file"      value="${jar.dir}/seraph.jar"/>
+    <property name="manifest.file" value="${jar.dir}/MANIFEST.MF"/>
+
+    <property name="main.class" value="no.easyconnect.seraph.core.SeraphCore"/>
+
+    <path id="external.jars">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+
+    <path id="project.classpath">
+        <pathelement location="${src.dir}"/>
+        <path refid="external.jars" />
+    </path>
+
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${jar.dir}"/>
+        <copy includeemptydirs="false" todir="${build.dir}">
+            <fileset dir="${src.dir}">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="cleanall" depends="clean"/>
+
+    <target name="build" depends="init">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}" classpathref="project.classpath">
+            <src path="${src.dir}"/>
+        </javac>
+    </target>bag
+
+    <target name="build-jar" depends="build">
+        <delete file="${jar.file}" />
+        <delete file="${manifest.file}" />
+
+        <manifest file="${manifest.file}" >
+            <attribute name="built-by" value="${user.name}" />
+            <attribute name="Main-Class" value="${main.class}" />
+        </manifest>
+
+        <jar destfile="${jar.file}" 
+            basedir="${build.dir}" 
+            manifest="${manifest.file}">
+            <fileset dir="${classes.dir}" includes="**/*.class" />
+            <fileset dir="${lib.dir}" includes="**/*.jar" />
+        </jar>
+    </target>
+</project>
+
+-->
+
+<!-- Another example
+
+<project>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes"/>
+    </target>
+
+    <target name="jar">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/E.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="oata.HelloWorld"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run">
+        <java jar="build/jar/HelloWorld.jar" fork="true"/>
+    </target>
+
+</project>
+-->
+
+ <project name="EFD" default="default" basedir=".">
+    <description>Builds, tests, and runs the project EFD.</description>
+    <import file="nbproject/build-impl.xml"/>
+    
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    
+    <property name="build.dir"     value="classes"/>
+    <property name="src.dir"       value="src"/>
+    <property name="lib.dir"       value="lib_build"/>
+    <property name="EFD_jar.dir"   value="lib_runtime" />
+    <property name="manifest.dir"  value="manifests" />
+    
+    <property name="classes.dir"   value="${build.dir}/classes"/>
+    <property name="inventory-classes.dir" value="${build.dir}/inventory-classes" />
+    <property name="inventory-cifs-classes.dir" value="${build.dir}/inventory-cifs-classes" />
+    <property name="inventory-fs-classes.dir" value="${build.dir}/inventory-fs-classes" />
+    <property name="inventory-zip-classes.dir" value="${build.dir}/inventory-zip-classes" />
+    <property name="jmx-classes.dir" value="${build.dir}/jmx-classes" />
+    <property name="lucene-classes.dir" value="${build.dir}/lucene-classes" />
+    <property name="main-classes.dir" value="${build.dir}/main-classes" />
+    <property name="security-classes.dir" value="${build.dir}/security-classes" />
+    <property name="ui-classes.dir" value="${build.dir}/ui-classes" />
+    <property name="util-classes.dir" value="${build.dir}/util-classes" />
+    
+    <property name="inventory-jar.file" value="${EFD_jar.dir}/EFD-2.2-inventory.jar"/>
+    <property name="inventory-manifest.file" value="${manifest.dir}/INVENTORY_MANIFEST.MF"/>
+    
+    <property name="inventory-fs-jar.file" value="${EFD_jar.dir}/EFD-2.2-inventory-fs.jar"/>
+    <property name="inventory-fs-manifest.file" value="${manifest.dir}/INVENTORY_FS_MANIFEST.MF"/>
+    
+    <property name="inventory-cifs-jar.file" value="${EFD_jar.dir}/EFD-2.2-inventory-cifs.jar"/>
+    <property name="inventory-cifs-manifest.file" value="${manifest.dir}/INVENTORY_CIFS_MANIFEST.MF"/>
+    
+    <property name="inventory-zip-jar.file" value="${EFD_jar.dir}/EFD-2.2-inventory-zip.jar"/>
+    <property name="inventory-zip-manifest.file" value="${manifest.dir}/INVENTORY_ZIP_MANIFEST.MF"/>
+    
+    <property name="jmx-jar.file" value="${EFD_jar.dir}/EFD-2.2-jmx.jar"/>
+    <property name="jmx-manifest.file" value="${manifest.dir}/JMX_MANIFEST.MF"/>
+    
+    <property name="lucene-jar.file" value="${EFD_jar.dir}/EFD-2.2-lucene.jar"/>
+    <property name="lucene-manifest.file" value="${manifest.dir}/LUCENE_MANIFEST.MF"/>
+    
+    <property name="main-jar.file" value="${EFD_jar.dir}/EFD-2.2-main.jar"/>
+    <property name="main-manifest.file" value="${manifest.dir}/MAIN_MANIFEST.MF"/>
+    
+    <property name="security-jar.file" value="${EFD_jar.dir}/EFD-2.2-security.jar"/>
+    <property name="security-manifest.file" value="${manifest.dir}/SECURITY_MANIFEST.MF"/>
+    
+    <property name="ui-jar.file" value="${EFD_jar.dir}/EFD-2.2-ui.jar"/>
+    <property name="ui-manifest.file" value="${manifest.dir}/UI_MANIFEST.MF"/>
+    
+    <property name="util-jar.file" value="${EFD_jar.dir}/EFD-2.2-util.jar"/>
+    <property name="util-manifest.file" value="${manifest.dir}/UTIL_MANIFEST.MF"/>
+    
+    <property name="inventory.class" value="com.solers.delivery.inventory"/>
+    <property name="inventory-fs.class" value="com.solers.delivery.inventory.fs"/>
+    <property name="inventory-cifs.class" value="com.solers.delivery.inventory.cifs"/>
+    <property name="inventory-zip.class" value="com.solers.delivery.inventory.zip"/>
+    <property name="jmx.class" value="com.solers.jmx"/>
+    <property name="lucene.class" value="com.solers.lucene"/>
+    <property name="main.class" value="com.solers.delivery"/>
+    <property name="security.class" value="com.solers.security"/>
+    <property name="ui.class" value="com.solers.ui"/>
+    <property name="util.class" value="com.solers.util"/>
+    
+    <path id="external.jars">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+    
+    <path id="inventory-classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${EFD_jar.dir}">
+            <include name="*util.jar"/>
+        </fileset>
+    </path>
+    
+    <path id="inventory-fs-classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${EFD_jar.dir}">
+            <include name="*inventory.jar"/>
+            <include name="*util.jar"/>
+        </fileset>
+    </path>
+    
+    <path id="inventory-cifs-classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${EFD_jar.dir}">
+            <include name="*inventory.jar"/>
+            <include name="*util.jar"/>
+        </fileset>
+    </path>
+    
+    <path id="inventory-zip-classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${EFD_jar.dir}">
+            <include name="*inventory.jar"/>
+            <include name="*util.jar"/>
+        </fileset>
+    </path>
+    
+    <path id="jmx-classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+    
+    <path id="lucene-classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${EFD_jar.dir}">
+            <include name="*util.jar"/>
+        </fileset>
+    </path>
+    
+    <path id="main-classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${EFD_jar.dir}">
+            <include name="*inventory.jar"/>
+            <include name="*inventory-fs.jar"/>
+            <include name="*inventory-cifs.jar"/>
+            <include name="*jmx.jar"/>
+            <include name="*lucene.jar"/>
+            <include name="*security.jar"/>
+            <include name="*util.jar"/>
+        </fileset>
+    </path>
+    
+    <path id="security-classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+    
+    <path id="ui-classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="util-classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${inventory-classes.dir}" />
+        <mkdir dir="${inventory-cifs-classes.dir}" />
+        <mkdir dir="${inventory-fs-classes.dir}" />
+        <mkdir dir="${inventory-zip-classes.dir}" />
+        <mkdir dir="${jmx-classes.dir}" />
+        <mkdir dir="${lucene-classes.dir}" />
+        <mkdir dir="${main-classes.dir}" />
+        <mkdir dir="${security-classes.dir}" />
+        <mkdir dir="${ui-classes.dir}" />
+        <mkdir dir="${util-classes.dir}" />
+        <mkdir dir="${EFD_jar.dir}"/>
+        <mkdir dir="${manifest.dir}"/>
+        <copy includeemptydirs="false" todir="${build.dir}">
+            <fileset dir="${src.dir}">
+                <exclude name="*.jar"/>
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="cleanall" depends="clean"/>
+
+   <!-- <target name="build" depends="init">
+        <echo message="Running ${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" includeantruntime="false" debuglevel="${debuglevel}" destdir="bin" source="${source}" 
+               target="${target}" classpathref="classpath">
+            <src path="${src.dir}"/>
+            <compilerarg value="-Xlint:deprecation"/>
+        </javac>
+    </target> -->
+    
+    <target name="build_all" depends="build_ui_jar, build_main_jar, build_inventory_zip_jar, 
+    build_inventory_cifs_jar, build_inventory_fs_jar"/>
+    
+    <target name="build_inventory" depends="init, build_util_jar">
+        <echo message="Running ${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" includeantruntime="false" debuglevel="${debuglevel}"
+               excludes="**/fs/**/*.java, **/cifs/**/*.java, **/zip/**/*.java, **/zipmanifest/**/*.java, 
+                        InventoryBundler*.java, InventoryFactory*.java, InventoryPathCreator.java"
+               destdir="${inventory-classes.dir}" source="${source}"
+               target="${target}" classpathref="inventory-classpath">
+            <src path="${src.dir}/java/com/solers/delivery/inventory"/>
+            <compilerarg value="-Xlint:deprecation"/>
+        </javac>
+    </target>
+    
+    <target name="build_inventory_cifs" depends="init">
+        <echo message="Running ${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" includeantruntime="false" debuglevel="${debuglevel}" 
+               destdir="${inventory-cifs-classes.dir}" source="${source}"
+               target="${target}" classpathref="inventory-cifs-classpath">
+            <src path="${src.dir}/java/com/solers/delivery/inventory/cifs"/>
+            <compilerarg value="-Xlint:deprecation"/>
+        </javac>
+    </target>
+    
+    <target name="build_inventory_fs" depends="init">
+        <echo message="Running ${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" includeantruntime="false" debuglevel="${debuglevel}" 
+               destdir="${inventory-fs-classes.dir}" source="${source}"
+               target="${target}" classpathref="inventory-fs-classpath">
+            <src path="${src.dir}/java/com/solers/delivery/inventory/fs"/>
+            <compilerarg value="-Xlint:deprecation"/>
+        </javac>
+    </target>
+    
+    <target name="build_inventory_zip" depends="init">
+        <echo message="Running ${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" includeantruntime="false" debuglevel="${debuglevel}" 
+               destdir="${inventory-zip-classes.dir}" source="${source}"
+               target="${target}" classpathref="inventory-zip-classpath">
+            <src path="${src.dir}/java/com/solers/delivery/inventory/zip"/>
+            <compilerarg value="-Xlint:deprecation"/>
+        </javac>
+    </target>
+    
+    <target name="build_jmx" depends="init">
+        <echo message="Running ${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" includeantruntime="false" debuglevel="${debuglevel}" 
+               destdir="${jmx-classes.dir}" source="${source}"
+               target="${target}" classpathref="jmx-classpath">
+            <src path="${src.dir}/java/com/solers/jmx"/>
+            <compilerarg value="-Xlint:deprecation"/>
+        </javac>
+    </target>
+    
+    <target name="build_lucene" depends="build_util_jar, init">
+        <echo message="Running ${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" includeantruntime="false" debuglevel="${debuglevel}" 
+               destdir="${lucene-classes.dir}" source="${source}"
+               target="${target}" classpathref="lucene-classpath">
+            <src path="${src.dir}/java/com/solers/lucene"/>
+            <compilerarg value="-Xlint:deprecation"/>
+        </javac>
+    </target>
+    
+    <target name="build_main" 
+            depends="init, build_inventory_fs_jar, build_inventory_jar, build_jmx_jar, build_lucene_jar, build_security_jar">
+        <echo message="Running ${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" includeantruntime="false" debuglevel="${debuglevel}" 
+               destdir="${main-classes.dir}" source="${source}"
+               excludes="**/inventory/zip/**,**/inventory/cifs/**,**/inventory/comparer/**,
+               **/inventory/fs/**,**/inventory/index/**,**/inventory/node/**,
+               **/inventory/plugin/**,**/zipmanifest/**,
+               **/inventory/DifferenceInventory.java,
+               **/inventory/HashProperties.java,**/inventory/Inventory.java,
+               **/inventory/TimeProperties.java,**/inventory/Writer.java,
+               **/*Test*.java, **/Mock*.java, SeleniumHelper.java"
+               target="${target}" classpathref="main-classpath">
+            <src path="${src.dir}/java/com/solers/delivery"/>
+            <compilerarg value="-Xlint:deprecation"/>
+        </javac>
+    </target>
+    
+    <target name="build_security" depends="init">
+        <echo message="Running ${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" includeantruntime="false" debuglevel="${debuglevel}" 
+               destdir="${security-classes.dir}" source="${source}"
+               target="${target}" classpathref="security-classpath">
+            <src path="${src.dir}/java/com/solers/security"/>
+            <compilerarg value="-Xlint:deprecation"/>
+        </javac>
+    </target>
+    
+    <target name="build_ui" depends="init">
+        <echo message="Running ${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" includeantruntime="false" debuglevel="${debuglevel}" 
+               destdir="${ui-classes.dir}" source="${source}"
+               target="${target}" classpathref="ui-classpath">
+            <src path="${src.dir}/java/com/solers/ui"/>
+            <compilerarg value="-Xlint:deprecation"/>
+        </javac>
+    </target>
+    
+    <target name="build_util" depends="init">
+        <echo message="Running ${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" includeantruntime="false" debuglevel="${debuglevel}" 
+               destdir="${util-classes.dir}" source="${source}"
+               target="${target}" classpathref="util-classpath">
+            <src path="${src.dir}/java/com/solers/util"/>
+            <compilerarg value="-Xlint:deprecation"/>
+        </javac>
+    </target>
+    
+    <target name="build_inventory_jar" depends="build_util_jar, build_inventory">
+        <delete file="${inventory-jar.file}" />
+        <delete file="${inventory-manifest.file}" />
+
+        <manifest file="${inventory-manifest.file}" >
+            <attribute name="built-by" value="${user.name}" />
+            <attribute name="Inventory-Class" value="${inventory.class}" />
+        </manifest>
+
+        <jar destfile="${inventory-jar.file}" 
+            includes="**/*.class" 
+            excludes="**/*Test*.class,**/Mock*.class"
+            basedir="${inventory-classes.dir}" 
+            manifest="${inventory-manifest.file}">
+        </jar>
+    </target>
+    
+    <target name="build_inventory_fs_jar" depends="build_inventory_fs">
+        <delete file="${inventory-fs-jar.file}" />
+        <delete file="${inventory-fs-manifest.file}" />
+
+        <manifest file="${inventory-fs-manifest.file}" >
+            <attribute name="built-by" value="${user.name}" />
+            <attribute name="InventoryFS-Class" value="${inventory-fs.class}" />
+        </manifest>
+
+        <jar destfile="${inventory-fs-jar.file}" 
+            includes="**/*.class" 
+            excludes="**/*TestCase*.class"
+            basedir="${inventory-fs-classes.dir}" 
+            manifest="${inventory-fs-manifest.file}">
+        </jar>
+    </target>
+    
+    <target name="build_inventory_cifs_jar" depends="build_inventory_jar, build_inventory_cifs">
+        <delete file="${inventory-cifs-jar.file}" />
+        <delete file="${inventory-cifs-manifest.file}" />
+
+        <manifest file="${inventory-cifs-manifest.file}" >
+            <attribute name="built-by" value="${user.name}" />
+            <attribute name="InventoryCIFS-Class" value="${inventory-cifs.class}" />
+        </manifest>
+
+        <jar destfile="${inventory-cifs-jar.file}" 
+            includes="**/*.class" 
+            excludes="**/*TestCase*.class"
+            basedir="${inventory-cifs-classes.dir}" 
+            manifest="${inventory-cifs-manifest.file}">
+        </jar>
+    </target>
+    
+    <target name="build_inventory_zip_jar" depends="build_inventory_jar, build_inventory_zip">
+        <delete file="${inventory-zip-jar.file}" />
+        <delete file="${inventory-zip-manifest.file}" />
+
+        <manifest file="${inventory-zip-manifest.file}" >
+            <attribute name="built-by" value="${user.name}" />
+            <attribute name="InventoryZip-Class" value="${inventory-zip.class}" />
+        </manifest>
+
+        <jar destfile="${inventory-zip-jar.file}" 
+            includes="**/*.class" 
+            excludes="**/*TestCase*.class"
+            basedir="${inventory-zip-classes.dir}" 
+            manifest="${inventory-zip-manifest.file}">
+        </jar>
+    </target>
+    
+    <target name="build_jmx_jar" depends="build_jmx">
+        <delete file="${jmx-jar.file}" />
+        <delete file="${jmx-manifest.file}" />
+
+        <manifest file="${jmx-manifest.file}" >
+            <attribute name="built-by" value="${user.name}" />
+            <attribute name="Jmx-Class" value="${jmx.class}" />
+        </manifest>
+
+        <jar destfile="${jmx-jar.file}" 
+            includes="**/*.class" 
+            excludes="**/*TestCase*.class"
+            basedir="${jmx-classes.dir}" 
+            manifest="${jmx-manifest.file}">
+        </jar>
+    </target>
+    
+    <target name="build_lucene_jar" depends="build_lucene">
+        <delete file="${lucene-jar.file}" />
+        <delete file="${lucene-manifest.file}" />
+
+        <manifest file="${lucene-manifest.file}" >
+            <attribute name="built-by" value="${user.name}" />
+            <attribute name="Lucene-Class" value="${lucene.class}" />
+        </manifest>
+
+        <jar destfile="${lucene-jar.file}" 
+            includes="**/*.class" 
+            excludes="**/*TestCase*.class"
+            basedir="${lucene-classes.dir}" 
+            manifest="${lucene-manifest.file}">
+        </jar>
+    </target>
+    
+    <target name="build_main_jar" depends="build_main">
+        <delete file="${main-jar.file}" />
+        <delete file="${main-manifest.file}" />
+
+        <manifest file="${main-manifest.file}" >
+            <attribute name="built-by" value="${user.name}" />
+            <attribute name="Main-Class" value="${main.class}" />
+        </manifest>
+
+        <jar destfile="${main-jar.file}" 
+            includes="**/*.class" 
+            excludes="**/acegi/**/*.class,**/perftools/**/*.class,
+                     **/pmd/**/*.class,**/util/transport/**/*.class,
+                     **/*Test*.class,**/*Mock*.class,**/*Assert*.class,
+                     **/SetupDevelopmentUsers.class,**/*Selen*.class,
+                     **/TimeoutException.class,**/Waiter.class"
+            basedir="${main-classes.dir}" 
+            manifest="${main-manifest.file}">
+        </jar>
+    </target>
+    
+    <target name="build_security_jar" depends="build_security">
+        <delete file="${security-jar.file}" />
+        <delete file="${security-manifest.file}" />
+
+        <manifest file="${security-manifest.file}" >
+            <attribute name="built-by" value="${user.name}" />
+            <attribute name="Security-Class" value="${security.class}" />
+        </manifest>
+
+        <jar destfile="${security-jar.file}" 
+            includes="**/*.class" 
+            excludes="**/*TestCase*.class"
+            basedir="${security-classes.dir}" 
+            manifest="${security-manifest.file}">
+        </jar>
+    </target>
+    
+    <target name="build_ui_jar" depends="build_ui">
+        <delete file="${ui-jar.file}" />
+        <delete file="${ui-manifest.file}" />
+
+        <manifest file="${ui-manifest.file}" >
+            <attribute name="built-by" value="${user.name}" />
+            <attribute name="Ui-Class" value="${ui.class}" />
+        </manifest>
+
+        <jar destfile="${ui-jar.file}" 
+            includes="**/*.class" 
+            excludes="**/*TestCase*.class"
+            basedir="${ui-classes.dir}" 
+            manifest="${ui-manifest.file}">
+        </jar>
+    </target>
+    
+    <target name="build_util_jar" depends="build_util">
+        <delete file="${util-jar.file}" />
+        <delete file="${util-manifest.file}" />
+
+        <manifest file="${util-manifest.file}" >
+            <attribute name="built-by" value="${user.name}" />
+            <attribute name="Util-Class" value="${util.class}" />
+        </manifest>
+
+        <jar destfile="${util-jar.file}" 
+            includes="**/*.class" 
+            excludes="**/*TestCase*.class"
+            basedir="${util-classes.dir}" 
+            manifest="${util-manifest.file}">
+        </jar>
+    </target>
+
+  </project>
+
+
+

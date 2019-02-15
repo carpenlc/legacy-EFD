@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/export/home/carpenlc/efd/EFD-2.2-Spring-3.0/src/java/com/solers/delivery/domain/ConsumerContentSet.java</file>
+            <file>file:/export/home/carpenlc/efd/EFD-2.2-Spring-3.0/src/java/com/solers/delivery/domain/validations/validators/ValidFileNameValidator.java</file>
+            <file>file:/export/home/carpenlc/efd/EFD-2.2-Spring-3.0/src/java/com/solers/delivery/content/AllowedHostServiceImpl.java</file>
+            <file>file:/export/home/carpenlc/efd/EFD-2.2-Spring-3.0/src/java/com/solers/delivery/domain/ContentSet.java</file>
+            <file>file:/export/home/carpenlc/efd/EFD-2.2-Spring-3.0/src/java/com/solers/delivery/util/FileSystemUtil.java</file>
+            <file>file:/export/home/carpenlc/efd/EFD-2.2-Spring-3.0/src/java/com/solers/delivery/content/AllowedHostService.java</file>
+            <file>file:/export/home/carpenlc/efd/EFD-2.2-Spring-3.0/src/java/com/solers/delivery/StartWeb.java</file>
+            <file>file:/export/home/carpenlc/efd/EFD-2.2-Spring-3.0/src/java/com/solers/delivery/domain/User.java</file>
+            <file>file:/export/home/carpenlc/efd/EFD-2.2-Spring-3.0/src/java/com/solers/delivery/domain/AllowedHost.java</file>
+        </group>
+    </open-files>
+</project-private>

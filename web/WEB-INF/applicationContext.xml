@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:security="http://www.springframework.org/schema/security"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+    
+    <bean id="sslContext" class="com.solers.security.ssl.SSLContextCreator" scope="singleton" lazy-init="false" init-method="init">
+        <constructor-arg>
+            <bean class="com.solers.security.password.PasswordFactoryBean">
+                <property name="provider" ref="${password.provider.bean}"/>
+                <property name="enumKey" value="com.solers.delivery.security.PasswordType.PKI_KEY"/>
+            </bean>
+        </constructor-arg>
+        <constructor-arg>
+            <bean class="com.solers.security.password.PasswordFactoryBean">
+                <property name="provider" ref="${password.provider.bean}"/>
+                <property name="enumKey" value="com.solers.delivery.security.PasswordType.PKI_KEYSTORE"/>
+            </bean>
+        </constructor-arg>
+        <constructor-arg>
+            <bean class="com.solers.security.password.PasswordFactoryBean">
+                <property name="provider" ref="${password.provider.bean}"/>
+                <property name="enumKey" value="com.solers.delivery.security.PasswordType.PKI_TRUSTSTORE"/>
+            </bean>
+        </constructor-arg>
+        <constructor-arg value="${security.keystore}"/>
+        <constructor-arg value="${security.truststore}"/>
+        <constructor-arg ref="webCipherSuites"/>
+        <constructor-arg value="false"/>
+        <constructor-arg value="${ssl.session.timeout}"/>
+        <constructor-arg>
+            <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+                <property name="targetClass"><value>com.solers.delivery.security.SecurityProviderUtil</value></property>
+                <property name="targetMethod"><value>getPRNG</value></property>
+            </bean>
+        </constructor-arg>
+    </bean>
+    
+    <import resource="file:///${efd.home}/conf/spring/config.xml" />
+    <import resource="file:///${efd.home}/conf/spring/shared.xml" />
+	<import resource="acegi.xml" />
+    
+	<bean id="securityBannerConfig"
+		class="com.solers.delivery.web.util.SecurityBannerConfig">
+		<property name="securityLevel" value="${security.level}" />
+		<property name="backgroundColor"
+			value="${security.background.color}" />
+	</bean>
+    
+    <bean id="restAuthentication" class="com.solers.delivery.rest.auth.AcegiRestAuthentication"/>
+    
+    <bean id="statusService" class="com.solers.delivery.management.RestfulStatusService">
+        <constructor-arg value="localhost"/>
+        <constructor-arg value="${rest.port}"/>
+        <constructor-arg ref="restAuthentication"/>
+        <property name="connectionParameters">
+            <props>
+                <prop key="tcpNoDelay">true</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="contentService" class="com.solers.delivery.content.RestfulContentService">
+        <constructor-arg value="localhost"/>
+        <constructor-arg value="${rest.port}"/>
+        <constructor-arg ref="restAuthentication"/>
+        <property name="connectionParameters">
+            <props>
+                <prop key="tcpNoDelay">true</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="userService" class="com.solers.delivery.user.RestfulUserService">
+        <constructor-arg value="localhost"/>
+        <constructor-arg value="${rest.port}"/>
+        <constructor-arg ref="restAuthentication"/>
+        <constructor-arg>
+            <props>
+                <prop key="tcpNoDelay">true</prop>
+            </props>
+        </constructor-arg>
+        <constructor-arg ref="adminConverter"/>
+    </bean>
+    
+    <bean id="passwordService" class="com.solers.delivery.user.RestfulPasswordService">
+        <constructor-arg value="localhost"/>
+        <constructor-arg value="${rest.port}"/>
+        <constructor-arg ref="restAuthentication"/>
+        <constructor-arg ref="adminConverter"/>
+        <property name="connectionParameters">
+            <props>
+                <prop key="tcpNoDelay">true</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="allowedHostService" class="com.solers.delivery.content.RestfulAllowedHostService">
+        <constructor-arg value="localhost"/>
+        <constructor-arg value="${rest.port}"/>
+        <constructor-arg ref="restAuthentication"/>
+        <property name="connectionParameters">
+            <props>
+                <prop key="tcpNoDelay">true</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="alertService" class="com.solers.delivery.alerts.RestfulAlertService">
+        <constructor-arg value="localhost"/>
+        <constructor-arg value="${rest.port}"/>
+        <constructor-arg ref="restAuthentication"/>
+        <constructor-arg ref="adminConverter"/>
+        <property name="connectionParameters">
+            <props>
+                <prop key="tcpNoDelay">true</prop>
+            </props>
+        </property>
+    </bean>
+
+	<bean id="synchronizationHistoryHelper"
+		class="com.solers.delivery.web.remoting.SynchronizationHistoryHelper"
+		scope="prototype">
+        <constructor-arg ref="synchronizationHistory"/>
+		<constructor-arg value="3000" />
+		<constructor-arg value="5000" />
+	</bean>
+    
+    <bean id="contentSetHelper" class="com.solers.delivery.web.remoting.ContentSetHelper" scope="singleton">
+        <constructor-arg ref="contentService"/>
+    </bean>
+    
+    <bean id="staticHelper" class="com.solers.delivery.web.remoting.StaticHelper">
+        <constructor-arg ref="securityBannerConfig"/>
+    </bean>
+    
+    <bean class="com.solers.delivery.security.RestfulAuthenticationProvider">
+        <security:custom-authentication-provider />
+        <constructor-arg>
+            <bean class="com.solers.delivery.rest.RestfulService">
+                <constructor-arg value="http"/>
+                <constructor-arg value="localhost"/>
+                <constructor-arg value="${rest.port}"/>
+                <property name="connectionParameters">
+                    <props>
+                        <prop key="tcpNoDelay">true</prop>
+                    </props>
+                </property>
+            </bean>
+        </constructor-arg>
+        <constructor-arg ref="adminConverter"/>
+    </bean>
+    
+    <bean id="systemHelper" class="com.solers.delivery.web.remoting.SystemHelper">
+        <constructor-arg ref="authenticationManager"/>
+        <constructor-arg ref="userService"/>
+        <constructor-arg ref="passwordService"/>
+    </bean>
+
+    <bean id="userHelper" class="com.solers.delivery.web.remoting.UserHelper">
+        <constructor-arg ref="userService"/>
+        <constructor-arg ref="passwordService"/>
+    </bean>
+    
+    <bean id="adminHelper" class="com.solers.delivery.web.remoting.AdminHelper">
+        <constructor-arg ref="allowedHostService"/>
+        <constructor-arg ref="userService"/>
+    </bean>
+    
+    <bean id="alertHelper" class="com.solers.delivery.web.remoting.AlertHelper">
+        <constructor-arg ref="alertService"/>
+    </bean>
+    
+</beans>

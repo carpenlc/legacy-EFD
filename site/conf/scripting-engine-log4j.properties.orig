@@ -1,0 +1,31 @@
+# Used for production. Do not modify, use log4j.dev.properties.
+
+log4j.rootLogger=INFO, LogFileAppender
+
+log4j.appender.LogFileAppender=org.apache.log4j.RollingFileAppender
+log4j.appender.LogFileAppender.file=${site.directory}/logs/main-${logging.name}.log
+log4j.appender.LogFileAppender.maxFileSize=10MB
+log4j.appender.LogFileAppender.maxBackupIndex=5
+log4j.appender.LogFileAppender.layout=org.apache.log4j.PatternLayout
+log4j.appender.LogFileAppender.layout.ConversionPattern=%d{dd MMM HH:mm:ss} %p %t %c - %m%n
+
+log4j.appender.ScriptingAppender=org.apache.log4j.RollingFileAppender
+log4j.appender.ScriptingAppender.File=${site.directory}/logs/${logging.name}.log
+log4j.appender.ScriptingAppender.maxFileSize=10MB
+log4j.appender.ScriptingAppender.maxBackupIndex=5
+log4j.appender.ScriptingAppender.layout=org.apache.log4j.PatternLayout
+log4j.appender.ScriptingAppender.layout.ConversionPattern=%d{dd MMM HH:mm:ss:SSSS} %p %t %c{1} - %m%n
+log4j.appender.ScriptingAppender.Threshold=INFO
+log4j.logger.com.solers.delivery.scripting=INHERITED, ScriptingAppender
+log4j.additivity.com.solers.delivery.scripting=false
+
+log4j.logger.org.hibernate=WARN
+log4j.logger.net.sf=WARN
+#log4j.logger.org.mortbay=WARN
+log4j.logger.com.mchange=WARN
+
+log4j.logger.com.solers.delivery.comparer=WARN
+log4j.logger.com.solers.delivery.comparer.FileBackedQueue=WARN
+log4j.logger.com.solers.delivery.inventory.InventoryCreator=WARN
+
+log4j.logger.org.directwebremoting=WARN

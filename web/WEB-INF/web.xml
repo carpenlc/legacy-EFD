@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"                          
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	version="2.4">
+
+	<display-name>Enterprise File Delivery</display-name>
+	<description>context.getServletContextName()</description>
+
+    <context-param>
+        <param-name>org.mortbay.jetty.servlet.Default.dirAllowed</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext.xml</param-value>
+    </context-param>
+
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>
+            org.springframework.security.ui.session.HttpSessionEventPublisher
+        </listener-class>
+	</listener>
+
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    
+    <filter>
+        <filter-name>xsltFilter</filter-name>
+        <filter-class>com.solers.delivery.web.XSLTFilter</filter-class>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <init-param>
+            <param-name>styleSheet</param-name>
+            <param-value>/index.xsl</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>xsltFilter</filter-name>
+        <url-pattern>index.xml</url-pattern>
+    </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>xsltFilter</filter-name>
+        <url-pattern>/</url-pattern>
+    </filter-mapping>
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+ 
+	<welcome-file-list>
+		<welcome-file>index.xml</welcome-file>
+	</welcome-file-list>
+
+    <servlet>
+        <servlet-name>dwr-invoker</servlet-name>
+        <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.directwebremoting.extend.AccessControl</param-name>
+            <param-value>com.solers.ui.dwr.SpringSecurityAccessControl</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.directwebremoting.extend.Compressor</param-name>
+            <param-value>org.directwebremoting.impl.NullCompressor</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>dwr-invoker</servlet-name>
+        <url-pattern>/dwr/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>

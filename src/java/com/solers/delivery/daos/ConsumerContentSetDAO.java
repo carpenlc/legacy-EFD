@@ -1,0 +1,44 @@
+/****************************************************************
+ *
+ * Solers, Inc. as the author of Enterprise File Delivery 2.1 (EFD 2.1)
+ * source code submitted herewith to the Government under contract
+ * retains those intellectual property rights as set forth by the Federal 
+ * Acquisition Regulations agreement (FAR). The Government has 
+ * unlimited rights to redistribute copies of the EFD 2.1 in 
+ * executable or source format to support operational installation 
+ * and software maintenance. Additionally, the executable or 
+ * source may be used or modified for by third parties as 
+ * directed by the government.
+ *
+ * (c) 2009 Solers, Inc.
+ ***********************************************************/
+package com.solers.delivery.daos;
+
+import java.util.List;
+
+import com.solers.util.dao.GenericDAO;
+
+/**
+ * @author DMartin
+ * This class extends the generic DAO interface to define the queries
+ * associated with a consumer content set.
+ */
+public interface ConsumerContentSetDAO extends GenericDAO<com.solers.delivery.domain.ConsumerContentSet, Long> {
+
+    String GET_CONSUMER_BY_NAME = "getConsumerByName";
+    String GET_CONSUMER_SETS = "getAllConsumers";
+
+    /**
+     * Query interface to return a single consumer content set by its name.
+     * @param name - The logical name of the content set.
+     * @return - A single consumer content set whose logical name matches the parameter 'name'.
+     */
+    com.solers.delivery.domain.ConsumerContentSet getConsumerByName(String name);
+
+    /**
+     * Query interface to return a list of all consumer content sets.
+     * @return - A complete list of consumer content sets.
+     */
+    List<com.solers.delivery.domain.ConsumerContentSet> getConsumerSets();
+
+}

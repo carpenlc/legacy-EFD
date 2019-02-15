@@ -1,0 +1,21 @@
+/* 
+EFD-571 - Fixes context menu item icon alignment in ie6
+Note: Unnecessary when ExtJS fixes the issues in a release
+http://extjs.com/forum/showthread.php?p=310268
+http://extjs.com/forum/showthread.php?p=278233#post278233
+http://www.extjs.com/forum/showthread.php?p=266251#post266251
+ */
+.ext-ie6 .x-menu-item-icon {left: -24px;}
+
+/*
+EFD-571 - Fixes alerts grid width issues in ie6
+Note: Unnecessary when ExtJS fixes the issues in a release
+https://extjs.com/forum/showthread.php?t=27012&page=3
+http://extjs.com/forum/showthread.php?p=213649#post213649
+*/
+.x-grid3-header-offset{padding-left:1px;width:10000px;width:auto;_width:auto;}
+/* Removed the "#" from in front of the 2nd width spec to avoid NetBeans complaints -- KRJ May 2016 */
+/*".x-grid3-header-offset{padding-left:1px;width:10000px;#width:auto;_width:auto;}*/
+/* width:10000px; // apply to all browsers */
+/* #width:auto; // override for Microsoft Internet Explorer browsers*/
+/* _width:auto; // override for IE browsers 6.0 and older */

@@ -1,0 +1,187 @@
+
+<dwr>
+  <init>
+    <converter id="enumValue" class="com.solers.delivery.web.EnumConverter"/>
+  </init>
+  
+  <allow>
+    <convert converter="bean" match="com.solers.util.Page">
+        <param name="include" value="count, page"/>
+    </convert>
+    
+    <convert converter="bean" match="com.solers.delivery.management.ConsumerStatus">
+        <param name="include" value="remainingTime, percentCompleted, state, itemCount, size, itemsAdded, itemsUpdated, itemsDeleted, bytesAdded, bytesUpdated, bytesDeleted, enabled, lastRuntime, elapsedTime, nextEstimatedRuntime, itemsAddedRemaining, itemsDeletedRemaining, itemsUpdatedRemaining, bytesAddedRemaining, bytesDeletedRemaining, bytesUpdatedRemaining, failures, bytesFailed, currentTransfers"/>
+    </convert>
+    
+    <convert converter="bean" match="com.solers.delivery.management.SupplierStatus">
+        <param name="include" value="state, enabled, itemCount, size, lastRuntime, nextEstimatedRuntime, currentSynchronizations"/>
+    </convert>
+    
+    <convert converter="bean" match="com.solers.delivery.transport.http.TransferStatus">
+        <param name="include" value="percentComplete, bytesTransferred, fileName, bytesRequested"/>
+    </convert>
+    
+    <convert converter="bean" match="com.solers.delivery.domain.ContentSet" javascript="ContentSet">
+        <param name="include" value="displayPath, id, scheduleExpressions, name, path, enabled, supplier, inventoryInterval, inventoryIntervalUnit, description, supportsGbsTransport, allowedHosts, ftpConnection"/>
+    </convert>
+    
+    <convert converter="bean" match="com.solers.delivery.domain.ConsumerContentSet" javascript="ConsumerContentSet">
+        <param name="include" value="concurrentTransfers, displayPath, scheduleExpressions, filters, maxFileSize, maxFileSizeUnit, fileDeleteDelay, fileDeleteDelayUnit, supplierName, supplierPort, supplierAddress, id, name, path, enabled, supplier, inventoryInterval, inventoryIntervalUnit, description, supportsGbsTransport, virtualManifest"/>
+    </convert>
+    
+    <convert converter="bean" match="com.solers.delivery.domain.FileFilter">
+        <param name="include" value="id, pattern, patternType, inclusive"/>
+    </convert>
+    
+    <convert converter="bean" match="com.solers.delivery.domain.ScheduleExpression">
+        <param name="include" value="id, cronExpression, duration, durationUnit"/>
+    </convert>
+    
+    <convert converter="bean" match="com.solers.delivery.domain.FtpConnection">
+        <param name="include" value="id, username, plainPassword, host, port, directory, passive, implicit"/>
+    </convert>
+    
+    <convert converter="bean" match="com.solers.delivery.domain.AllowedHost">
+        <param name="include" value="alias, commonName, id"/>
+    </convert>
+    
+    <convert converter="bean" match="com.solers.delivery.web.util.SecurityBannerConfig">
+        <param name="include" value="securityLevel, hostName, backgroundColor"/>
+    </convert>
+    
+    <convert converter="bean" match="com.solers.delivery.domain.User">
+        <param name="include" value="username, id, enabled, firstName, lastName, adminRole, lastFailedLogins, lastLogin, lastLocation, currLogin, location, failedLogins, initialPassword"/>
+    </convert>
+    
+    <convert converter="bean" match="com.solers.delivery.content.status.SynchronizationResult">
+        <param name="include" value="modified, warning, failure, message"/>
+    </convert>
+    
+    <convert converter="bean" match="com.solers.delivery.domain.Alert">
+        <param name="include" value="id, unread, message, timestamp, type"/>
+    </convert>
+    <convert converter="enum" match="com.solers.delivery.domain.Alert$AlertType"/>
+    
+    <convert converter="bean" match="com.solers.delivery.web.remoting.UserNode"/>
+    <convert converter="bean" match="com.solers.delivery.web.remoting.ContentSetNode"/>
+    <convert converter="bean" match="com.solers.delivery.reports.history.ReportDetail"/>
+    <convert converter="bean" match="com.solers.delivery.reports.history.Synchronization"/>
+    <convert converter="bean" match="com.solers.delivery.content.status.CurrentSynchronization"/>
+    
+    <convert converter="enumValue" match="com.solers.util.unit.TimeIntervalUnit"/>
+    <convert converter="enumValue" match="com.solers.util.unit.FileSizeUnit"/>
+    <convert converter="enumValue" match="com.solers.delivery.domain.FileFilter$Pattern"/>
+    
+    <convert converter="string" match="com.solers.delivery.event.ContentEvent$ContentEventResult"/>
+
+    <convert converter="bean" match="com.solers.util.dao.ValidationException">
+        <param name="include" value="messages"/>
+    </convert>
+    
+    <convert converter="bean" match="org.springframework.security.SpringSecurityException">
+        <param name="include" value="message"/>
+    </convert>
+    
+    <convert converter="bean" javascript="LoginRequired" match="org.springframework.security.AuthenticationCredentialsNotFoundException">
+        <param name="include" value="message"/>
+    </convert>
+    
+    <convert converter="bean" javascript="AccessDenied" match="org.springframework.security.AccessDeniedException">
+        <param name="include" value="message"/>
+    </convert>
+    
+    <convert converter="bean" javascript="PasswordExpired" match="org.springframework.security.CredentialsExpiredException">
+        <param name="include" value="message"/>
+    </convert>
+    
+    <convert converter="exception" match="java.lang.RuntimeException">
+        <param name="include" value="message"/>
+    </convert>
+   
+    <create creator="spring" javascript="StatusService" scope="session">
+        <param name="beanName" value="statusService"/>
+        <include method="getConsumerStatus" role="ROLE_USER"/>
+        <include method="getSupplierStatus" role="ROLE_USER"/>
+        <include method="getCurrentSynchronizations" role="ROLE_USER"/>
+    </create>
+    
+    <create creator="spring" javascript="HistoryHelper" scope="session">
+        <param name="beanName" value="synchronizationHistoryHelper"/>
+        
+        <include method="resolve" role="ROLE_USER"/>
+        <include method="getSynchronizations" role="ROLE_USER"/>
+        <include method="getSynchronizationDetails" role="ROLE_USER"/>
+    </create>
+    
+    <create creator="spring" javascript="ContentSetHelper" scope="session">
+        <param name="beanName" value="contentSetHelper"/>
+        
+        <include method="getConsumers" role="ROLE_USER"/>
+        <include method="getSuppliers" role="ROLE_USER"/>
+        <include method="getContentSet" role="ROLE_USER"/>
+        <include method="saveSupplier" role="ROLE_USER"/>
+        <include method="saveConsumer" role="ROLE_USER"/>
+        <include method="enable" role="ROLE_USER"/>
+        <include method="disable" role="ROLE_USER"/>
+        <include method="remove" role="ROLE_USER"/>
+        <include method="newConsumer" role="ROLE_USER"/>
+        <include method="newSupplier" role="ROLE_USER"/>
+        <include method="updateDisplayPath" role="ROLE_USER"/>
+        <include method="listSuppliers" role="ROLE_USER"/>
+    </create>
+    
+    <create creator="spring" javascript="AllowedHostService" scope="session">
+        <param name="beanName" value="allowedHostService"/>
+        
+        <include method="list" role="ROLE_USER, ROLE_ADMIN"/>
+        <include method="save" role="ROLE_ADMIN"/>
+        <include method="remove" role="ROLE_ADMIN"/>
+    </create>
+    
+    <create creator="spring" javascript="Static" scope="application">
+        <param name="beanName" value="staticHelper"/>
+        
+        <include method="getData"/>
+    </create>
+    
+    <create creator="spring" javascript="System" scope="session">
+        <param name="beanName" value="systemHelper"/>
+        
+        
+        <include method="getSystemInfo"/>
+        <include method="login"/>
+        
+        <include method="heartbeat" role="*"/>
+        <include method="logout" role="*"/>
+        <include method="changePassword" role="*"/>
+    </create>
+    
+    <create creator="spring" javascript="UserHelper" scope="session">
+        <param name="beanName" value="userHelper"/>
+        
+        <include method="getUsers" role="ROLE_ADMIN"/>
+        <include method="saveUser" role="ROLE_ADMIN"/>
+        <include method="getUserByName" role="ROLE_ADMIN"/>
+        <include method="getUserById" role="ROLE_ADMIN"/>
+    </create>
+    
+    <create creator="spring" javascript="AdminHelper" scope="session">
+        <param name="beanName" value="adminHelper"/>
+        
+        <include method="deleteAll" role="ROLE_ADMIN"/>
+        <include method="enable" role="ROLE_ADMIN"/>
+        <include method="disable" role="ROLE_ADMIN"/>
+    </create>
+    
+    <create creator="spring" javascript="AlertHelper" scope="session">
+        <param name="beanName" value="alertHelper"/>
+        
+        <include method="getAdminAlerts" role="ROLE_ADMIN"/>
+        <include method="getUserAlerts" role="ROLE_USER"/>
+        <include method="markRead" role="*"/>
+        <include method="remove" role="*"/>
+    </create>
+    
+  </allow>
+</dwr>
+

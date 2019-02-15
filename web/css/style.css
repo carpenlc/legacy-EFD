@@ -1,0 +1,396 @@
+body {
+    font-family: Arial, Helvetica, tahoma, sans-serif;
+    font-size: .75em;
+    height: 100%;  /* Setting height/width to 100% is necessary so that events on window/document can be captured */
+    width: 100%;
+}
+
+div#content {
+    display: none;
+}
+
+
+
+table {
+    font-family: Arial, Helvetica, tahoma, sans-serif;
+    font-size: 1em;
+}
+
+div#header #navigation {
+	position:absolute;
+	width:390px;
+	right:326px;
+	top:6px;
+	height:26px;
+	background-image:url(/images/nav.png);
+	font-family: sans-serif;
+	background-repeat:repeat;
+    display: none;
+}
+
+div#header #navigation a{
+	padding:5px;
+	padding-left: 15px;
+	padding-right: 15px;
+	float:left;
+	color:#999999  ;
+	font-weight:normal;
+	text-decoration:none;
+	font-size: 12px;
+	border-right:1px solid #999999;
+}
+
+div#header #navigation a:focus {outline: none;}
+
+div#header #navigation a:hover{
+	background-color:#333333;
+	color:#FFFFFF;
+	padding:5px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.navigation-selected {
+	color:#FFFFFF !important;
+	font-weight:bold !important;
+}
+
+div#header #NGA_Logo {
+    position: absolute;
+    right: 10px;
+}
+
+
+.dashboard-row-active {
+	background-image: url(/ext/resources/images/default/grid/loading.gif);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.dashboard-row-success {
+	background-image: url(/images/check.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.dashboard-row-modified {
+    background-image: url(/images/sync.png);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.dashboard-row-warning {
+    background-image: url(/images/warning.png);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.classification {
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.new-folder-icon {
+    background-image:url(/images/folder-new.png) !important;
+}
+
+.expand-icon {
+    background-image:url(/images/list-add.png) !important;
+}
+
+.collapse-icon {
+    background-image:url(/images/list-remove.png) !important;
+}
+
+.refresh-icon {
+    background-image:url(/images/view-refresh.png) !important;
+}
+
+.logout-icon {
+    background-image:url(/images/system-log-out.png) !important;
+}
+
+.change-pw-icon {
+    background-image:url(/images/system-lock-screen.png) !important;
+}
+
+.global-help-icon {
+    background-image:url(/images/help-browser.png) !important;
+}
+
+.delete-icon {
+    background-image:url(/images/emblem-unreadable.png) !important;
+}
+
+.enable-cs-icon {
+    background-image:url(/images/network-idle.png) !important;
+}
+
+.disable-cs-icon {
+    background-image:url(/images/network-offline.png) !important;
+}
+
+.new-icon {
+    background-image:url(/images/document-new.png) !important;
+}
+
+.new-user-icon {
+    background-image:url(/images/system-users.png) !important;
+}
+
+.new-allowed-host-icon {
+    background-image:url(/images/network-workgroup.png) !important;
+}
+
+.new-consumer-icon {
+    background-image:url(/images/go-previous.png) !important;
+}
+
+.new-supplier-icon {
+    background-image:url(/images/go-next.png) !important;
+}
+
+.status-icon {
+    background-image:url(/images/utilities-system-monitor.png) !important;
+}
+
+.history-icon {
+    background-image:url(/images/x-office-spreadsheet.png) !important;
+}
+
+.edit-icon {
+    background-image:url(/images/document-properties.png) !important;
+}
+
+.enabled .x-tree-node-icon {
+    background-image: url(/images/enabled.gif) !important;
+}
+
+.disabled .x-tree-node-icon {
+    background-image: url(/images/disabled.gif) !important;
+}
+
+.cursor-icon-hand {
+	cursor: pointer;
+}
+
+.history-row-failed, .dashboard-row-failure {
+	background-image: url(/images/error.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.red-progress {
+	background: #FF3333;
+}
+
+.dod_banner {
+	font-weight: bold;
+}
+
+.status-panels {
+	width: 95%;
+	margin: 10px;
+	padding: 10px;
+}
+
+.status-bar {
+	width: 95%;
+	margin: 10px;
+}
+
+#dod_banner {
+    background-color: white;
+}
+
+#dod_banner p {
+	margin: 7px;
+  	padding: 7px;
+}
+	
+#dod_banner ul li {
+	margin: 10px; 
+	padding: 4px;
+	padding-left: 10px;
+	list-style-type: circle;
+	list-style-position: inside; 
+}	
+
+div.menu-tip dl dt {
+    font-weight: bold;
+}
+
+div.menu-tip dl dd {
+    text-indent: 5%;
+}
+
+.menu-tip {
+    background-color: white;
+}
+
+.msg .x-box-mc {
+    font-size: 1.25em;
+}
+#msg-div {
+    position: absolute;
+    left: 0%;
+    top: 10px;
+    width: 250px;
+    z-index: 20000;
+}
+
+table.status-details {
+    width: 100%;
+}
+
+table.status-details thead th {
+   font-weight: bold;
+}
+
+span.bold {
+    font-weight: bold;
+}
+
+ul.confirm {
+    list-style-type: disc;
+    padding-left: 25px;
+}
+
+.dashboard-margin {
+	padding: 5px;
+}
+
+/* The following keeps long messages in a MessageBox from overflowing */
+.x-window-dlg .ext-mb-content{
+  overflow/**/: auto;
+  \height: 1%;
+}
+
+#cron table.format {
+    border-collapse: collapse;
+}
+
+#cron table.format th {
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid black;
+}
+
+#cron table.format th.middle, #cron table.format td.middle {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+} 
+
+#cron table.format td {
+    padding: 10px;
+}
+
+#cron table.format tr.middle td {
+    border-bottom: 1px solid black;
+}
+
+.x-form-field-wrap .form-help-trigger {
+    background-image: url(/images/help-trigger.gif);
+    cursor: pointer;
+}
+
+span.required-marker {
+    font-weight: bold;
+    color: red;
+}
+
+span.build-date, span.build-number {
+    font-size: 85%;
+}
+
+div#error {
+    font-weight: bold;
+    color: red;
+    text-align: center;
+}
+
+div#header #NGA_Logo {
+    position: absolute;
+    right: 0;
+}
+
+div.help {
+    background-color: white;
+    padding: 10px;
+}
+
+div.help h3, div.help h4, div.help dl {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+div.help h3 {
+    font-size: 110%;
+}
+
+div.help dd {
+    margin: 10px;
+    padding-left: 10px;
+}
+
+div.help dt {
+    font-style: italic;
+}
+
+div.help ul li {
+    margin: 10px;
+    padding-left: 10px;
+    list-style-type: disc;
+    list-style-position: inside; 
+}
+
+div.help ul.notes {
+    font-style: italic;
+}
+
+.icon-grid {
+    background-image: url(/ext/resources/images/default/shared/icons/fam/grid.png) !important;
+}
+
+.alert-unread td {
+    font-weight: bold;
+}
+
+.supplier-item {
+    padding:3px 10px 3px 10px;
+    border:1px solid #fff;
+    border-bottom:1px solid #eeeeee;
+    white-space:normal;
+    color:#555;
+}
+.supplier-item h3 {
+    display:block;
+    font:inherit;
+    font-weight:bold;
+    color:#222;
+}
+
+/* Grid filters */
+.x-grid3-hd-row td.ux-filtered-column {
+    font-style: italic;
+    font-weight: bold;
+}
+
+.hide-tabs .x-tab-strip-wrap {
+    display: none
+}
+
+#user-statusbar .logout-button .x-btn-text {
+  font-weight: bold;
+}
+
+/* For logout button in the user-status bar, offset the icon so that it can appear to the left of text */
+#user-statusbar .logout-icon {
+    background-position: center left !important;
+    background-repeat: no-repeat !important;    
+    padding-left: 18px !important;
+    display:inline-block !important;
+    line-height:16px !important;
+    height: 16px !important;
+}
